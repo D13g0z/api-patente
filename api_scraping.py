@@ -1,14 +1,10 @@
-import os
 from flask import Flask, request, jsonify
+from scraping import obtener_datos  # Esta función debe hacer el scraping real
 
 app = Flask(__name__)
 
 @app.route('/consulta', methods=['GET'])
 def consulta():
     patente = request.args.get('patente')
-    # lógica de scraping aquí
-    return jsonify({'resultado': f'Consulta recibida para {patente}'})
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Render define PORT
-    app.run(host='0.0.0.0', port=port, debug=True)
+    resultado = obtener_datos(patente)  # Aquí se ejecuta el scraping
+    return jsonify({'resultado': resultado})
