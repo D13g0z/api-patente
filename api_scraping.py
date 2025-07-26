@@ -1,18 +1,14 @@
+import os
 from flask import Flask, request, jsonify
-from scraping import consultar_patente_chile
 
 app = Flask(__name__)
 
-@app.route("/consulta", methods=["GET"])
+@app.route('/consulta', methods=['GET'])
 def consulta():
-    patente = request.args.get("patente", "").upper()
+    patente = request.args.get('patente')
+    # lógica de scraping aquí
+    return jsonify({'resultado': f'Consulta recibida para {patente}'})
 
-    if not patente:
-        return jsonify({"error": "❗ Debes proporcionar una patente."}), 400
-
-    resultado = consultar_patente_chile(patente)
-    return jsonify({"resultado": resultado})
-
-if __name__ == "__main__":
-    app.run(debug=True)
-    
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))  # Render define PORT
+    app.run(host='0.0.0.0', port=port, debug=True)
